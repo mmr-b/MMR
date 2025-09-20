@@ -1,0 +1,352 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MK Animal Teach — Demo</title>
+  <style>
+    /* Reset & base */
+    *{box-sizing:border-box}body{font-family:Inter,system-ui,Arial,Helvetica,sans-serif;margin:0;color:#263238;background:#f3f6f9}
+    a{color:inherit}
+    header{background:#0f1724;color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo-placeholder{width:48px;height:48px;background:linear-gradient(135deg,#4f46e5,#06b6d4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff}
+    header nav ul{list-style:none;display:flex;gap:12px;margin:0;padding:0}
+    header nav a{color:#e6eef6;text-decoration:none;padding:8px 12px;border-radius:8px;transition:background .15s}
+    header nav a:hover{background:rgba(255,255,255,0.06)}.banner{background:#06283d;color:#fff;padding:48px 24px;text-align:center;background-image:linear-gradient(135deg,rgba(6,40,61,0.85),rgba(8,45,74,0.85));}
+.banner h1{margin:0;font-size:28px}
+.banner p{margin-top:8px;opacity:.9}
+
+.container{max-width:1100px;margin:28px auto;padding:0 16px}
+.controls{display:flex;gap:12px;align-items:center;margin-bottom:18px}
+.search{flex:1}
+input[type=text]{width:100%;padding:12px 14px;border-radius:10px;border:1px solid #d7e3ee}
+.btn{display:inline-block;padding:10px 14px;border-radius:10px;background:#0f1724;color:#fff;text-decoration:none;border:none;cursor:pointer}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.card{background:#fff;border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(16,24,40,0.06);display:flex;flex-direction:column}
+.card h3{margin:6px 0}
+.card p{font-size:13px;color:#374151}
+.card .meta{font-size:12px;color:#6b7280;margin-top:auto}
+
+.detail{background:#fff;border-radius:12px;padding:18px;box-shadow:0 6px 20px rgba(16,24,40,0.06)}
+.detail h2{margin-top:0}
+.detail .meta{color:#475569;margin:6px 0}
+.detail p{line-height:1.6;margin:10px 0;color:#334155}
+
+footer{padding:18px;text-align:center;color:#9aa4b2}
+
+.contct{
+  text-align: center;
+}
+
+.iu{
+  text-align: center;
+  padding: 12px 130px;
+}
+.byr{
+  padding: 8px 60px;
+  background: green;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  border: none
+}
+.byr:hover{
+  background: limegreen;
+}
+@media (max-width:640px){header{flex-direction:column;align-items:flex-start} .banner{padding:32px 16px}}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo-placeholder">MK</div>
+      <div>
+        <div style="font-weight:700;font-size:16px">MK Animal Teach</div>
+        <div style="font-size:12px;opacity:.85">The Animal Media Operators </div>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#animals">Animals</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>  <section class="banner" id="home">
+    <div class="container">
+      <h1>MN Animal Teach —  Pro (The Teacher)</h1>
+      <p>We teachers how to animals grow and many information with all tips and triks.</p>
+    </div>
+  </section>  <main class="container" id="animals">
+    <div class="controls">
+      <div class="search"><input id="q" type="text" placeholder="Search animals by name, habitat, diet..." /></div>
+      <button class="btn" id="searchBtn">Search</button>
+      <button class="btn" id="resetBtn">Reset</button>
+    </div><section>
+  <div class="grid" id="list"></div>
+</section>
+
+<hr style="margin:24px 0;border:none;border-top:1px solid #e6eef6" />
+
+<section id="detailArea"></section>
+
+  </main> 
+  <div id="contact" class="contct">
+    <h1>Contact Us</h1>
+    <br>
+     <input class="iu" type="email" placeholder="example@gmail.com">
+    <br>
+    <br>
+     <textarea name="op" id="" cols="45" rows="9" placeholder="Write Your Opinion Here"></textarea>
+     <br>
+     <br>
+     <button class="byr"type="submit">Send</button>
+  </div>
+  <footer id="about">
+    <div class="container">
+      <small>© 2025 MMR Animal Teach — pro. We Provide More Useful Tips And Information For Animals.</small>
+    </div>
+  </footer>  <script>
+  // ----- Embedded animals data (partial demo set). Each 'details' field contains extended descriptive text.
+  const animals = [
+    {
+      name: "Lion",
+      scientific: "Panthera leo",
+      habitat: "Savannas, grasslands and open woodlands of sub-Saharan Africa and a small population in India (Gir Forest)",
+      diet: "Carnivore — primarily ungulates such as zebras, wildebeest, buffalo, antelope; opportunistic scavenger when needed",
+      lifespan: "10–14 years in the wild, up to 20 years in captivity",
+      details: `Lions are iconic large mammals known for their social structure and powerful presence. Adult males are famous for their manes, a trait unique among big cats, which provides both protection during fights and signals to rivals and potential mates. Female lions, or lionesses, do most of the hunting and raise cubs cooperatively within the pride. A pride can vary from a few individuals to more than a dozen. Lions communicate using vocalizations (notably roaring), scent markings, and body language; their roars can be heard up to 5 miles under ideal conditions.
+
+Hunting behavior often involves coordinated group tactics: lionesses may work together to stalk and ambush prey, taking advantage of darkness and terrain. While typically associated with open grasslands, lions also utilize wooded areas for cover. They spend a significant portion of the day resting and conserve energy for hunting. Cubs are vulnerable in their first months and mortality can be high due to starvation, disease, or infanticide by incoming males. Human-wildlife conflict, habitat loss, prey depletion, and poaching have driven declines in lion populations across parts of Africa. Conservation programs focus on habitat protection, human-wildlife conflict mitigation, and community-based stewardship. Culturally, lions are deeply embedded in folklore and national symbols across Africa and beyond, representing strength and nobility.`
+    },
+
+    {
+      name: "Tiger",
+      scientific: "Panthera tigris",
+      habitat: "Tropical forests, grasslands, mangroves and temperate forests across Asia (India, Russia, Southeast Asia, Sumatra)",
+      diet: "Carnivore — deer, wild boar, buffalo, and sometimes smaller mammals or fish",
+      lifespan: "8–10 years in the wild, up to 20+ years in captivity",
+      details: `Tigers are the largest of the big cats and are solitary, territorial predators. Each tiger has a unique coat pattern of stripes that helps camouflage it among tall grasses and forest shadows. They rely on stealth and powerful bursts of speed to ambush prey, often striking from behind or the side and using their strong forelimbs and jaws to deliver a fatal bite. Tigers are known to be excellent swimmers and will enter water to hunt or cool off.
+
+Many tiger subspecies have adapted to local conditions, from the Siberian tiger surviving in frigid, snowy habitats to the Sumatran tiger thriving in dense tropical forests. Human activities — habitat fragmentation, poaching for body parts used in traditional medicine, and loss of prey — have reduced tiger ranges dramatically. Conservation efforts include anti-poaching patrols, protected-area management, captive-breeding programs, and community engagement to reduce conflict and protect corridors that allow tigers to move between protected areas. Tigers play a critical role as apex predators, helping regulate herbivore populations and maintain ecosystem balance.`
+    },
+
+    {
+      name: "African Elephant",
+      scientific: "Loxodonta africana",
+      habitat: "Savannas, forests and deserts across sub-Saharan Africa",
+      diet: "Herbivore — grasses, leaves, bark, fruit; an adult can eat several hundred pounds of vegetation per day",
+      lifespan: "60–70 years in the wild",
+      details: `African elephants are the largest land animals on Earth, recognizable by their large ears (which help thermoregulation), long trunks (a fusion of nose and upper lip), and large tusks (modified incisors). The trunk is a versatile organ capable of breathing, smelling, touching, grasping, and producing sound. Elephants live in complex social groups led by matriarchs, usually composed of related females and their offspring; males may lead more solitary lives or form small bachelor groups.
+
+Their intelligence, memory, and complex social behavior are well documented — they mourn dead family members, use tools, and display cooperative problem-solving. Elephants shape ecosystems by uprooting trees, creating water holes, and dispersing seeds, thereby influencing vegetation structure and biodiversity. Threats include poaching for ivory, habitat loss, and human-elephant conflict, especially where ranges overlap with agricultural lands. Conservation focuses on anti-poaching measures, corridors linking protected areas, and community-based coexistence strategies.`
+    },
+
+    {
+      name: "Giraffe",
+      scientific: "Giraffa camelopardalis",
+      habitat: "Savannas and open woodlands of Africa, often near acacia and other tree species",
+      diet: "Herbivore — leaves (especially from acacia trees), shoots, and fruit; specialized tongue and long neck allow feeding at heights other browsers cannot reach",
+      lifespan: "20–25 years in the wild",
+      details: `Giraffes are the tallest land animals, with adult males and females capable of reaching heights of 4.5 to 6 meters depending on subspecies. Their long necks, while giving them access to high foliage, are supported by an adapted vertebral structure and a strong cardiovascular system to pump blood to the brain. Giraffes have unique spotted coat patterns that vary among subspecies and provide camouflage among trees and light.
+
+Social groups are fluid; individuals come and go from herds that may include related females and their offspring. Giraffes use visual cues and low-frequency sounds to communicate, and calves often take shelter in vegetation to avoid predators in early life stages. Despite their size, young giraffes are vulnerable to lions, hyenas, and other large predators. Habitat change and fragmentation, along with poaching in some areas, threaten certain giraffe populations. Conservation actions include habitat protection, research, and monitoring of populations.`
+    },
+
+    {
+      name: "Giant Panda",
+      scientific: "Ailuropoda melanoleuca",
+      habitat: "Bamboo forests in mountainous regions of central China",
+      diet: "Specialized herbivore — >99% bamboo (leaves, stems, shoots), supplemented occasionally by small mammals or carrion",
+      lifespan: "Approximately 20 years in the wild, up to 30 years in captivity",
+      details: `Giant pandas are distinctive black-and-white bears with a highly specialized diet primarily composed of bamboo. Their digestive systems are more typical of carnivores, but pandas have adapted behavioral and anatomical traits (strong jaw muscles and molars) to consume large amounts of fibrous bamboo, often eating for 10–16 hours a day to meet energy needs. Pandas have a pseudo-thumb (an extended wrist bone) that helps them hold bamboo stems while feeding.
+
+Pandas are generally solitary; individuals maintain home ranges and communicate through scent marks and vocalizations. Reproduction can be challenging — pandas have a short annual breeding window and typically raise one or two cubs. Conservation of pandas has been notable for the establishment and expansion of protected reserves and extensive bamboo restoration, which has helped populations rebound in recent decades. The species is also a key symbol for global wildlife conservation.`
+    },
+
+    {
+      name: "Bottlenose Dolphin",
+      scientific: "Tursiops truncatus",
+      habitat: "Coastal and offshore temperate and tropical waters worldwide",
+      diet: "Carnivore — fish, squid, crustaceans; use echolocation to locate prey",
+      lifespan: "20–40 years depending on population and environmental conditions",
+      details: `Bottlenose dolphins are highly social and intelligent marine mammals recognized for their curious behavior and complex social networks. They live in groups called pods, which can be stable long-term associations or temporary aggregations. Dolphins use sophisticated echolocation clicks and whistles to navigate, communicate, and hunt; their cognitive abilities include problem solving, cooperative hunting strategies, and cultural transmission of behaviors.
+
+Dolphins have been observed using tools (e.g., sponges to protect their rostrums while foraging on the seafloor) and teaching hunting techniques to younger individuals. Human impacts — such as bycatch, pollution, habitat degradation, and noise — affect many dolphin populations. Conservation measures include protected areas, fishing gear modifications, pollution control, and rescue/rehabilitation for stranded individuals.`
+    },
+
+    {
+      name: "Kangaroo",
+      scientific: "Macropus spp.",
+      habitat: "Varied habitats across Australia including grasslands, woodlands, and savanna",
+      diet: "Herbivore — grasses, leaves, and shrubs; many species are grazers or browsers",
+      lifespan: "6–8 years in the wild for many species; larger species may live longer",
+      details: `Kangaroos are marsupials native to Australia and nearby islands, famous for their powerful hind legs adapted for hopping and a large muscular tail used for balance. Females have a pouch (marsupium) where joeys (young) continue development after a short gestation period. Different kangaroo species occupy niches from open plains (e.g., red kangaroo) to forested areas (e.g., tree-kangaroos), and their behavior, diet, and social systems vary accordingly.
+
+Kangaroos are mostly crepuscular, active around dawn and dusk, and can travel long distances searching for food and water. Males may engage in boxing contests to establish dominance during mating season. Human land use changes, vehicle strikes, and shooting in some regions have affected populations; however, some species remain abundant while others face localized threats. Management strategies often involve monitoring, habitat stewardship, and conflict mitigation.`
+    },
+
+    {
+      name: "Zebra",
+      scientific: "Equus quagga (and related species)",
+      habitat: "Savannas and grasslands of Africa",
+      diet: "Herbivore — grasses and occasional shrubs",
+      lifespan: "20–25 years in the wild",
+      details: `Zebras are striped equids whose bold black-and-white patterns serve functions including predator confusion, social recognition, and possibly thermoregulation or insect deterrence. They live in social family groups often led by a dominant male with several females and offspring. Migration and movement patterns can be extensive in regions where rainfall and food availability vary seasonally.
+
+Zebras interact with other grazers such as wildebeest and antelope, often benefiting from mixed-species herds that increase vigilance against predators. Threats include habitat loss, hunting, and competition with livestock in some areas. Conservation includes protected area management and monitoring populations to understand changes in distribution and abundance.`
+    },
+
+    {
+      name: "Rhinoceros",
+      scientific: "Family Rhinocerotidae",
+      habitat: "African savannas and forests (black and white rhinos) and Asian grasslands and forests (Indian, Javan, Sumatran rhinos)",
+      diet: "Herbivore — browsers or grazers depending on species; feed on grasses, leaves, shoots",
+      lifespan: "35–50 years",
+      details: `Rhinoceroses are large, thick-skinned herbivores known for their one or two horns made of keratin. Different species occupy a range of habitats across Africa and Asia, and their feeding strategies reflect local vegetation. Rhinos have poor eyesight but excellent senses of smell and hearing. Many species are critically endangered, primarily due to poaching driven by demand for horn in illegal markets and habitat loss.
+
+Conservation strategies include intensive anti-poaching patrols, translocations to safer habitats, community engagement to reduce demand and benefit local people, and captive breeding when necessary. The species' role in ecosystems includes grazing pressure that shapes plant communities and creates habitat heterogeneity used by other species.`
+    },
+
+    {
+      name: "Hippopotamus",
+      scientific: "Hippopotamus amphibius",
+      habitat: "Rivers, lakes and wetlands across sub-Saharan Africa",
+      diet: "Herbivore — primarily grasses; largely nocturnal feeders on land",
+      lifespan: "40–50 years",
+      details: `Hippos are large semi-aquatic mammals that spend much of the day submerged to keep cool and emerge at night to graze on grasses. Despite their apparently docile appearance, hippos are highly territorial in water and can be aggressive toward humans and other animals that approach their aquatic domains. Their massive jaws and large canine teeth are formidable weapons.
+
+Hippos also influence aquatic ecosystems through nutrient transfer; their dung can be an important source of nutrients for fish and other aquatic life. Human-wildlife conflict, habitat degradation, and historical hunting have impacted hippo populations regionally. Management and conservation often require balancing human needs, livestock grazing, and wetland protection.`
+    },
+
+    {
+      name: "Gray Wolf",
+      scientific: "Canis lupus",
+      habitat: "A wide range of habitats across North America, Eurasia and parts of North Africa including forests, tundra, and grasslands",
+      diet: "Carnivore — ungulates (deer, elk, moose), smaller mammals, carrion; hunt cooperatively in packs",
+      lifespan: "6–8 years in the wild (longer in protected areas or captivity)",
+      details: `Gray wolves are social carnivores known for pack structures often consisting of an alpha pair and their offspring. Pack hunting allows wolves to take down large prey, and coordinated behaviors such as flanking and endurance running are common during hunts. Wolves communicate with howls, body postures, scent markings and facial expressions.
+
+Wolves historically occupied vast ranges across continents but were extirpated from many regions due to persecution and habitat loss. Reintroduction and protection programs have restored populations in some areas, leading to debates about ecological benefits (such as trophic cascades) and conflicts with livestock owners. Modern conservation approaches emphasize coexistence strategies, compensation schemes, and landscape-level planning.`
+    },
+
+    {
+      name: "Brown Bear",
+      scientific: "Ursus arctos",
+      habitat: "Forests, mountains and tundra across Eurasia and North America",
+      diet: "Omnivore — fish (notably salmon in some regions), small mammals, plants, berries, roots; opportunistic and seasonally variable",
+      lifespan: "20–30 years in the wild",
+      details: `Brown bears are large omnivores with varied diets depending on season and location. In coastal areas with abundant salmon runs, bears build up fat reserves for hibernation by feasting on fish. Inland populations may forage for roots, berries, small mammals, and carrion. Brown bears have significant cultural and ecological importance in many parts of their range.
+
+They can be solitary outside of mating or feeding aggregations, and mothers are protective of cubs for the first years. Human-bear interactions can lead to conflict, especially where food attractants bring bears into camps or towns; securing food and waste is a critical part of coexistence. Conservation measures include protected areas, wildlife corridors, and community outreach to reduce conflict.`
+    },
+
+    {
+      name: "Bald Eagle",
+      scientific: "Haliaeetus leucocephalus",
+      habitat: "Near large bodies of open water across North America — lakes, coasts, rivers",
+      diet: "Carnivore — primarily fish, but also birds and small mammals; opportunistic scavenger",
+      lifespan: "20–30 years in the wild",
+      details: `Bald eagles are large raptors known for their white head and tail feathers contrasting with dark brown body plumage. They build massive stick nests (aeries) often reused for many years and can be found perched on tall trees or cliffs near water. Their eyesight is extraordinary, enabling them to spot fish from great distances.
+
+Historically, pesticides like DDT caused population crashes through eggshell thinning; bans on such chemicals and legal protection have allowed many populations to recover. Bald eagles are apex predators and play a role in regulating prey and scavenging dynamics. They are also culturally iconic and are a national symbol in the United States.`
+    },
+
+    {
+      name: "Emperor Penguin",
+      scientific: "Aptenodytes forsteri",
+      habitat: "Sea ice and nearby Antarctic waters",
+      diet: "Carnivore — fish, krill and squid",
+      lifespan: "15–20 years",
+      details: `Emperor penguins are the largest penguin species and are uniquely adapted to the extreme Antarctic environment. They breed during the Antarctic winter, with males incubating a single egg on their feet beneath a brood pouch while females forage at sea. This remarkable strategy requires males to endure long periods of fasting and extreme cold, relying on fat stores and huddling behavior to conserve heat.
+
+Emperor penguins dive to great depths to forage and are highly efficient swimmers. Changes in sea ice due to climate change pose significant risks to their breeding success and food availability. Conservation relies on monitoring populations, protecting key breeding areas, and addressing global climate change drivers.`
+    }
+
+  ];
+
+  // ----- Utility functions for rendering
+  const listEl = document.getElementById('list');
+  const detailArea = document.getElementById('detailArea');
+  const qInput = document.getElementById('q');
+  const searchBtn = document.getElementById('searchBtn');
+  const resetBtn = document.getElementById('resetBtn');
+
+  function makeCard(an){
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `<h3>${escapeHtml(an.name)}</h3>
+      <div style="font-size:13px;color:#374151">${escapeHtml(an.scientific)}</div>
+      <p style="margin-top:10px;">${shorten(an.details,160)}</p>
+      <div class=\"meta\">Habitat: ${escapeHtml(an.habitat)} • Diet: ${escapeHtml(an.diet)}</div>
+      <div style=\"margin-top:12px;display:flex;gap:8px\">` +
+      `<button class=\"btn\" onclick=\"showDetail('${encodeURIComponent(an.name)}')\">View</button>` +
+      `</div>`;
+    return div;
+  }
+
+  function renderList(data){
+    listEl.innerHTML='';
+    if(!data.length){listEl.innerHTML='<div style="grid-column:1/-1;padding:20px;background:#fff;border-radius:10px;text-align:center">No results</div>';return}
+    data.forEach(a=>listEl.appendChild(makeCard(a)));
+  }
+
+  function showDetail(name){
+    const decoded = decodeURIComponent(name);
+    const an = animals.find(x=>x.name.toLowerCase()===decoded.toLowerCase());
+    if(!an){detailArea.innerHTML='<div class="detail"><p>Animal not found.</p></div>';return}
+    detailArea.innerHTML = `
+      <div class="detail">
+        <h2>${escapeHtml(an.name)}</h2>
+        <div class="meta"><strong>Scientific name:</strong> ${escapeHtml(an.scientific)} • <strong>Lifespan:</strong> ${escapeHtml(an.lifespan)}</div>
+        <div class="meta"><strong>Habitat:</strong> ${escapeHtml(an.habitat)} • <strong>Diet:</strong> ${escapeHtml(an.diet)}</div>
+        <hr style="border:none;border-top:1px solid #eef6fb;margin:12px 0" />
+        <div>${formatParagraphs(an.details)}</div>
+      </div>
+    `;
+    window.scrollTo({top: detailArea.offsetTop-20, behavior:'smooth'});
+  }
+
+  function formatParagraphs(text){
+    // preserve paragraphs separated by double newlines
+    return escapeHtml(text).split('\n\n').map(p=>`<p>${p.replace(/\n/g,'<br>')}</p>`).join('');
+  }
+
+  function shorten(text, len){
+    const clean = text.replace(/\n/g,' ');
+    return clean.length>len?clean.slice(0,len).trim()+'...':clean;
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  // ----- Search & interactions
+  function query(q){
+    if(!q) return animals.slice();
+    q=q.toLowerCase().trim();
+    return animals.filter(a=>{
+      return a.name.toLowerCase().includes(q) || a.scientific.toLowerCase().includes(q) || a.habitat.toLowerCase().includes(q) || a.diet.toLowerCase().includes(q) || a.details.toLowerCase().includes(q);
+    });
+  }
+
+  searchBtn.addEventListener('click',()=>{ renderList(query(qInput.value)); detailArea.innerHTML=''; });
+  resetBtn.addEventListener('click',()=>{ qInput.value=''; renderList(animals); detailArea.innerHTML=''; });
+  qInput.addEventListener('keydown',(e)=>{ if(e.key==='Enter'){ renderList(query(qInput.value)); detailArea.innerHTML=''; } });
+
+  // initial render
+  renderList(animals);
+
+  // allow deep links like ?name=Lion
+  (function checkHash(){
+    const params = new URLSearchParams(location.search);
+    const n = params.get('name');
+    if(n){ showDetail(n); }
+  })();
+
+  </script></body>
+</html>
