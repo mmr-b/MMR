@@ -1,352 +1,762 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MK Animal Teach — Demo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roket Pro — Termux Tools</title>
   <style>
-    /* Reset & base */
-    *{box-sizing:border-box}body{font-family:Inter,system-ui,Arial,Helvetica,sans-serif;margin:0;color:#263238;background:#f3f6f9}
-    a{color:inherit}
-    header{background:#0f1724;color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo-placeholder{width:48px;height:48px;background:linear-gradient(135deg,#4f46e5,#06b6d4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff}
-    header nav ul{list-style:none;display:flex;gap:12px;margin:0;padding:0}
-    header nav a{color:#e6eef6;text-decoration:none;padding:8px 12px;border-radius:8px;transition:background .15s}
-    header nav a:hover{background:rgba(255,255,255,0.06)}.banner{background:#06283d;color:#fff;padding:48px 24px;text-align:center;background-image:linear-gradient(135deg,rgba(6,40,61,0.85),rgba(8,45,74,0.85));}
-.banner h1{margin:0;font-size:28px}
-.banner p{margin-top:8px;opacity:.9}
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0b1221;
+      color: #fff;
+    }
 
-.container{max-width:1100px;margin:28px auto;padding:0 16px}
-.controls{display:flex;gap:12px;align-items:center;margin-bottom:18px}
-.search{flex:1}
-input[type=text]{width:100%;padding:12px 14px;border-radius:10px;border:1px solid #d7e3ee}
-.btn{display:inline-block;padding:10px 14px;border-radius:10px;background:#0f1724;color:#fff;text-decoration:none;border:none;cursor:pointer}
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #111a33;
+      padding: 15px 30px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #4da6ff;
+      letter-spacing: 1px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 16px;
+      position: relative;
+      transition: 0.3s;
+    }
+    nav a:hover, nav a.active-link {
+      color: #00ffcc;
+    }
+    nav a.active-link::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: #00ffcc;
+      bottom: -4px;
+      left: 0;
+    }
 
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
-.card{background:#fff;border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(16,24,40,0.06);display:flex;flex-direction:column}
-.card h3{margin:6px 0}
-.card p{font-size:13px;color:#374151}
-.card .meta{font-size:12px;color:#6b7280;margin-top:auto}
+    /* Sections */
+    .section {
+      display: none;
+      max-width: 1000px;
+      margin: auto;
+      padding: 60px 20px;
+      animation: fadeIn 0.6s;
+    }
+    .active-section {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
 
-.detail{background:#fff;border-radius:12px;padding:18px;box-shadow:0 6px 20px rgba(16,24,40,0.06)}
-.detail h2{margin-top:0}
-.detail .meta{color:#475569;margin:6px 0}
-.detail p{line-height:1.6;margin:10px 0;color:#334155}
+    /* Hero Banner */
+    .hero {
+      text-align: center;
+      padding: 50px 20px;
+      background: linear-gradient(135deg, #1f2b4d, #0b1221);
+      border-radius: 10px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+    }
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 15px;
+      color: #4da6ff;
+    }
+    .hero p {
+      font-size: 20px;
+      color: #cfd8dc;
+      max-width: 700px;
+      margin: 15px auto 25px;
+    }
+    .hero button {
+      padding: 12px 30px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background: #4da6ff;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .hero button:hover {
+      background: #00ffcc;
+      color: #111a33;
+    }
 
-footer{padding:18px;text-align:center;color:#9aa4b2}
+    /* Section titles */
+   .section h1 {
+     font-family: 'Times New Roman', Times, serif;
+      text-align: center;
+      font-size: 28px;
+      color: #4da6ff;
+      margin-bottom: 15px;
+    }
+   .section h2{
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+    section p {
+      font-size: 17px;
+      line-height: 1.7;
+      color: #ddd;
+    }
 
-.contct{
-  text-align: center;
-}
+    /* Contact form */
+    form input, form textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      font-size: 15px;
+    }
+    form button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      border-radius: 6px;
+      border: none;
+      background: #4da6ff;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    form button:hover {
+      background: #00ffcc;
+      color: #111a33;
+    }
 
-.iu{
-  text-align: center;
-  padding: 12px 130px;
-}
-.byr{
-  padding: 8px 60px;
-  background: green;
-  font-family: Arial, Helvetica, sans-serif;
-  color: white;
-  border: none
-}
-.byr:hover{
-  background: limegreen;
-}
-@media (max-width:640px){header{flex-direction:column;align-items:flex-start} .banner{padding:32px 16px}}
+    /* Modals */
+    .modal {
+      display: none;
+      position: fixed;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+    }
+    .modal-content {
+      background: #1a233a;
+      padding: 30px;
+      border-radius: 12px;
+      width: 360px;
+      color: #fff;
+      animation: scaleUp 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    }
+    .modal-content input {
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: none;
+      width: 100%;
+      font-size: 15px;
+    }
+    .modal-content button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 6px;
+      border: none;
+      background: #4da6ff;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .modal-content button:hover {
+      background: #00ffcc;
+      color: #111a33;
+    }
+    .close {
+      float: right;
+      cursor: pointer;
+      font-size: 20px;
+      transition: 0.3s;
+    }
+    .close:hover {
+      color: #00ffcc;
+    }
+    @keyframes scaleUp {
+      from {transform: scale(0.8); opacity: 0;}
+      to {transform: scale(1); opacity: 1;}
+    }
 
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 25px;
+      background: #111a33;
+      color: #aaa;
+      margin-top: 50px;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
+
+  <!-- Header -->
   <header>
-    <div class="brand">
-      <div class="logo-placeholder">MK</div>
-      <div>
-        <div style="font-weight:700;font-size:16px">MK Animal Teach</div>
-        <div style="font-size:12px;opacity:.85">The Animal Media Operators </div>
-      </div>
-    </div>
+    <div class="logo">>_ Termux Tx Cmd</div>
     <nav>
-      <ul>
-        <li><a href="#home">Mahim</a></li>
-        <li><a href="#animals">Animals</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
+      <a onclick="showSection('home')" class="active-link">Home</a>
+      <a onclick="showSection('tools')">Tools</a>
+      <a onclick="showSection('docs')">About</a>
+      <a onclick="showSection('contact')">Contact</a>
+      <a onclick="openModal('login')">Login</a> |
+      <a onclick="openModal('signup')">Sign Up</a>
     </nav>
-  </header>  <section class="banner" id="home">
-    <div class="container">
-      <h1>MN Animal Teach —  Pro (The Teacher)</h1>
-      <p>We teachers how to animals grow and many information with all tips and triks.</p>
+  </header>
+
+  <!-- Sections -->
+  <div id="home" class="section active-section">
+    <div class="hero">
+      <h1>Welcome To Termux Tx Cmd >_🚀</h1>
+      <p>Create a powerful terminal environment on your Android using Termux effortlessly.</p>
+      <button onclick="showSection('tools')">Get Tools</button>
     </div>
-  </section>  <main class="container" id="animals">
-    <div class="controls">
-      <div class="search"><input id="q" type="text" placeholder="Search animals by name, habitat, diet..." /></div>
-      <button class="btn" id="searchBtn">Search</button>
-      <button class="btn" id="resetBtn">Reset</button>
-    </div><section>
-  <div class="grid" id="list"></div>
-</section>
+    <h2>About Termux Tx Cmd </h2>
+    <p>Termux TX CMD is a powerful and lightweight terminal-based toolset designed for Android users who want to unlock the full potential of their devices. It provides a Linux-like environment directly on mobile, allowing developers, ethical hackers, and tech enthusiasts to perform advanced tasks without the need for a rooted device or heavy virtual machines.
+<br>
+<br>
+With Termux TX CMD, you can execute commands, run scripts, and install packages seamlessly. It merges the flexibility of the Linux command line with the portability of Android, making it a perfect choice for learning, experimenting, and working on the go.
+<br>
+<br>
+<h2>Key Features:</h2>
+<br>
+Command Line Access – Run and execute powerful Linux commands directly on Android.
+<br>
+<br>
+Development Friendly – Compile and run code in multiple languages like Python, C, C++, Go, Java, and more.
 
-<hr style="margin:24px 0;border:none;border-top:1px solid #e6eef6" />
+Networking Tools – Access tools like ssh, curl, wget, and nmap to test, analyze, or manage networks.
+<br>
+<br>
+Package Management – Install and manage thousands of packages from Termux repositories with pkg and apt.
+<br>
+<br>
+Customization – Create your own scripts, aliases, and shortcuts for faster workflow.
+<br>
+<br>
+Educational Use – Learn Linux basics, coding, or ethical hacking without needing a full computer setup.
 
-<section id="detailArea"></section>
 
-  </main> 
-  <div id="contact" class="contct">
-    <h1>Contact Us</h1>
-    <br>
-     <input class="iu" type="email" placeholder="example@gmail.com">
-    <br>
-    <br>
-     <textarea name="op" id="" cols="45" rows="9" placeholder="Write Your Opinion Here"></textarea>
-     <br>
-     <br>
-     <button class="byr"type="submit">Send</button>
+<h2>Why Use Termux TX CMD?</h2>
+<br>
+Unlike many other mobile apps, Termux TX CMD does not just simulate a terminal — it provides a real Linux environment. Whether you want to practice commands, test projects, or manage servers remotely, Termux TX CMD gives you the freedom to work anywhere, anytime.
+<br>
+<h2>It’s especially useful for:</h2>
+
+Students who want to practice programming and Linux basics.
+<br>
+Ethical hackers and security testers exploring penetration tools.
+<br>
+Developers who need portable coding and compiling support.
+<br>
+Tech hobbyists looking to expand their knowledge and skills.
+<br>
+<br>
+<h2>Vision:</h2>
+
+The main vision of Termux TX CMD is to make advanced technology more accessible. We aim to provide a professional, easy-to-use, and powerful command-line platform for Android that bridges the gap between mobile convenience and desktop performance.
+</p>
   </div>
-  <footer id="about">
-    <div class="container">
-      <small>© 2025 MMR Animal Teach — pro. We Provide More Useful Tips And Information For Animals.</small>
+
+  <div id="tools" class="section">
+    <h1>💥 All Termux Tools 💥</h1>
+    <p>All Termux Hacking Tools Here. Copy And Past Termux To Run. 
+    <h2>1. Khali Linux</h2>
+    pkg install wget
+    <br>
+wget -O install-nethunter-termux https://offs.ec/2MceZWr
+<br>
+chmod +x install-nethunter-termux
+<br>
+./install-nethunter-termux
+</p>
+<h2>2. Website Scanner</h2>
+pkg install git
+<br>
+pkg install php
+<br>
+git clone https://github.com/nandydark/grim.git
+<br>
+cd grim
+<br>
+ls
+<br>
+chmod +x *
+<br>
+php grim.php
+<h2>3. SpamWa</h2>
+git clone https://github.com/krypton-byte/SpamWa
+<br>
+cd SpamWa
+<br>
+python spam.py
+<h2>4. SplMap</h2>
+pkg update && pkg upgrade -y
+<br>
+apt install python python2
+<br>
+pkg install git
+<br>
+git clone https://github.com/sqlmapproject/sqlmap
+<br>
+cd sqlmap
+<br>
+chmod +x sqlmap.py
+<br>
+python2 sqlmap.py (Optional)
+<h2>5. Tool-X</h2>
+pkg update && pkg upgrade -y
+<br>
+pkg install git
+<br>
+git clone https://github.com/Rajkumrdusad/Tool-X.git
+<br>
+cd Tool-X
+<br>
+chmod +x install.aex
+<br>
+sh install. aex
+<br>
+./install.aex
+<h2>6. Fsociety</h2>
+pkg update && pkg upgrade
+<br>
+pkg install git
+<br>
+pkg install python2
+<br>
+git clone https://github.com/Manisso/fsociety.git
+<br>
+cd fsociety
+<br>
+chmod +x install.sh
+<br>
+python2 fsociety.py
+<h2>7. IP Tracker</h2>
+apt update
+<br>
+apt install git -y
+<br>
+git clone https://github.com/rajkumardusad/IP-Tracer.git
+<br>
+cd IP-Tracer
+<br>
+chmod +x install
+<br>
+sh install
+<br>
+./install
+<h2>8. Auto FB Id Creator</h2>
+pip install fake_email
+<br>
+pip install faker
+<br>
+git clone https://github.com/KGF-TEM/FB-AUTO.git
+<br>
+cd FB-AUTO
+<br>
+python AUTO-FB-ENC.py
+<h2>9. Black-Hydra</h2>
+git clone https://GitHub.com/Gameye98/Black-Hydra.git
+<br>
+cd Black-Hydra
+<br>
+python2 blackhydra_1.0.py
+<h2>10. Number Tracker</h2>
+apt update && apt upgrade 
+<br>
+git clone https://github.com/thakur2309/phonextract.git
+<br>
+cd phonextract
+<br>
+pip install -r requirements.txt
+<br>
+apt install python-pip
+<br>
+python3 phonextract.py
+<h2>11. Al Hack</h2>
+pkg install git
+<br>
+pkg install curl
+<br>
+git clone https://github.com/4lbH4cker/ALHacking
+<br>
+cd ALHacking
+<br>
+ls
+<br>
+chmod +x *
+<br>
+bash alhack.sh
+<h2>12. SMS Bomber</h2>
+pkg update && pkg upgrade -y
+<br>
+pkg install git python -y
+<br>
+git clone https://github.com/TheSpeedX/TBomb.git
+<br>
+cd TBomb
+<br>
+bash TBomb.sh
+<h2>13. Lazymux</h2>
+pkg update && pkg install git python
+<br>
+git clone https://github.com/Gameye98/Lazymux
+<br>
+cd Lazymux
+<br>
+python lazymux.py
+<h2>14. Location Fishing</h2>
+pkg update && pkg upgrade
+<br>
+pkg install git python php openssh -y
+<br>
+git clone https://github.com/thewhiteh4t/seeker.git
+<br>
+cd seeker
+<br>
+chmod +x install.sh
+<br>
+./install.sh
+<br>
+python seeker.py
+<h2>15. Fishing</h2>
+git clone https://github.com/htr-tech/zphisher.git
+<br>
+cd zphisher
+<br>
+bash zphisher.sh
+<h2>16.Weather Finder</h2>
+git clone https://github.com/Termux-Tx-Cmd/Weather-Finder.git
+<br>
+cd Weather-Finder
+<br>
+pkg install python -y
+<br>
+pip install requests colorama
+<br>
+python wheather.py
+<h2>17. DrakFly 500+</h2>
+git clone https://github.com/Ranginang67/DarkFly-Tool
+<br>
+cd DarkFly-Tool
+<br>=
+chmod +x install.py
+<br>
+python2 install.py
+<br>
+DarkFly
+<h2>18. Virus Builder</h2>
+git clone https://github.com/Cyber-Dioxide/Virus-Builder/
+<br>
+cd Virus-Builder
+<br>
+pip install -r requirements.txt
+<br>
+python Builder.py
+  </div>
+
+  <div id="docs" class="section">
+    <h1>About Termux</h1>
+    <p>Termux is an Android terminal emulator and Linux environment app. It allows running Linux commands, installing packages, writing scripts, and running servers on your phone without rooting. Termux has a package manager like Linux (apt, pkg) and supports Python, Node.js, Ruby, PHP, C/C++, Git, SSH, Vim, Nano, and more.
+    <br>
+
+To install Termux, download it from Google Play Store or F-Droid. After opening, update it using pkg update && pkg upgrade.
+<br>
+You can install packages using pkg install package_name. For example, pkg install python installs Python, pkg install git installs Git, and pkg install nodejs installs Node.js.
+<br>
+Basic Linux commands in Termux include ls (list files), cd (change directory), pwd (current directory), mkdir (make directory), rm (remove files), cp (copy), mv (move or rename), cat (show file content), nano (edit file), and vim (edit file).
+<br>
+To access Android storage, use termux-setup-storage. Files are stored in /data/data/com.termux/files/home/ inside Termux.
+<br>
+You can program in multiple languages. For Python, run python3 script.py. For C, install clang and run clang program.c -o program then ./program. For Node.js, run node app.js.
+<br>
+Git can be used in Termux: git clone <repo_url> to download repositories. Termux also supports networking and ethical hacking tools like nmap, hydra, sqlmap, and curl.
+<br>
+Automation is possible with bash scripts. Make a script with nano script.sh, make it executable with chmod +x script.sh, and run it with ./script.sh. You can also schedule tasks using termux-widget or cron jobs.
+<br>
+Termux can run servers: Python HTTP server with python3 -m http.server 8080, Node.js server with node server.js, or PHP server with php -S 0.0.0.0:8000.
+<br>
+Tips: Use Ctrl+C to stop commands, tab for autocomplete, Termux:API to access phone features, and tmux for background sessions.
+<br>
+Advantages: lightweight, no root needed, portable Linux environment, good for learning Linux, programming, and scripting. Limitations: some packages may not work on Android, limited GUI, and hardware limits intensive tasks.
+</p>
+<h1>Termux Overview & Uses</h1>
+
+<h3>1. What is Termux?</h3>
+Termux is an Android terminal emulator and Linux environment app that lets you run a full Linux distribution on your phone. You can install packages, run scripts, and do programming directly from your mobile device.
+
+<h3>2. Programming & Development:</h3>
+
+Run Python, Java, C, C++, Node.js, and many other languages.
+
+Develop and test code on your phone.
+
+Write scripts to automate tasks.
+
+
+<h3>3. Networking & Hacking (Ethical):</h3>
+
+Use tools for network scanning, penetration testing, and security research.
+
+Install packages like Nmap, Metasploit, etc.<br>
+(Only for ethical purposes!)
+
+
+<h3>4. File & System Management:</h3>
+
+Manage files like in Linux.
+
+Copy, move, and edit files using commands.
+
+Access storage and external drives.
+
+
+<h3>5. Server Hosting:</h3>
+
+Run web servers (Apache, Nginx).
+
+Host websites or apps directly from your phone.
+
+Use database servers like MySQL, PostgreSQL.
+
+
+<h3>6. Automation & Scripting:</h3>
+
+Automate tasks like file backups, downloads, and notifications.
+<br>
+<br>
+Write shell scripts (.sh) for repeated tasks.
+
+
+<h3>7. Learning & Experimentation:</h3>
+
+Learn Linux commands and programming.
+
+Experiment with open-source tools and software.
+
+  </div>
+
+  <div id="contact" class="section">
+    <h2>📩 Contact</h2>
+    <form>
+      <input type="text" placeholder="Name" required>
+      <input type="email" placeholder="Email" required>
+      <input type="text" placeholder="Subject" required>
+      <textarea rows="4" placeholder="Message" required></textarea>
+      <button>Submit</button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 Roket Pro. All rights reserved. | Privacy | Terms
+  </footer>
+
+  <!-- Login Modal -->
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('login')">&times;</span>
+      <h3>Login</h3>
+      <input type="text" placeholder="Email / Username">
+      <input type="password" placeholder="Password">
+      <button>Login</button>
     </div>
-  </footer>  <script>
-  // ----- Embedded animals data (partial demo set). Each 'details' field contains extended descriptive text.
-  const animals = [
-    {
-      name: "Lion",
-      scientific: "Panthera leo",
-      habitat: "Savannas, grasslands and open woodlands of sub-Saharan Africa and a small population in India (Gir Forest)",
-      diet: "Carnivore — primarily ungulates such as zebras, wildebeest, buffalo, antelope; opportunistic scavenger when needed",
-      lifespan: "10–14 years in the wild, up to 20 years in captivity",
-      details: `Lions are iconic large mammals known for their social structure and powerful presence. Adult males are famous for their manes, a trait unique among big cats, which provides both protection during fights and signals to rivals and potential mates. Female lions, or lionesses, do most of the hunting and raise cubs cooperatively within the pride. A pride can vary from a few individuals to more than a dozen. Lions communicate using vocalizations (notably roaring), scent markings, and body language; their roars can be heard up to 5 miles under ideal conditions.
+  </div>
 
-Hunting behavior often involves coordinated group tactics: lionesses may work together to stalk and ambush prey, taking advantage of darkness and terrain. While typically associated with open grasslands, lions also utilize wooded areas for cover. They spend a significant portion of the day resting and conserve energy for hunting. Cubs are vulnerable in their first months and mortality can be high due to starvation, disease, or infanticide by incoming males. Human-wildlife conflict, habitat loss, prey depletion, and poaching have driven declines in lion populations across parts of Africa. Conservation programs focus on habitat protection, human-wildlife conflict mitigation, and community-based stewardship. Culturally, lions are deeply embedded in folklore and national symbols across Africa and beyond, representing strength and nobility.`
-    },
+  <!-- Signup Modal -->
+  <div class="modal" id="signupModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('signup')">&times;</span>
+      <h3>Sign Up</h3>
+      <input type="text" placeholder="Name">
+      <input type="email" placeholder="Email">
+      <input type="password" placeholder="Password">
+      <input type="password" placeholder="Confirm Password">
+      <button>Create Account</button>
+    </div>
+  </div>
 
-    {
-      name: "Tiger",
-      scientific: "Panthera tigris",
-      habitat: "Tropical forests, grasslands, mangroves and temperate forests across Asia (India, Russia, Southeast Asia, Sumatra)",
-      diet: "Carnivore — deer, wild boar, buffalo, and sometimes smaller mammals or fish",
-      lifespan: "8–10 years in the wild, up to 20+ years in captivity",
-      details: `Tigers are the largest of the big cats and are solitary, territorial predators. Each tiger has a unique coat pattern of stripes that helps camouflage it among tall grasses and forest shadows. They rely on stealth and powerful bursts of speed to ambush prey, often striking from behind or the side and using their strong forelimbs and jaws to deliver a fatal bite. Tigers are known to be excellent swimmers and will enter water to hunt or cool off.
+  <!-- JS -->
+  <script>
+  // =========================
+  // Section Switcher
+  // =========================
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
+    document.getElementById(id).classList.add('active-section');
 
-Many tiger subspecies have adapted to local conditions, from the Siberian tiger surviving in frigid, snowy habitats to the Sumatran tiger thriving in dense tropical forests. Human activities — habitat fragmentation, poaching for body parts used in traditional medicine, and loss of prey — have reduced tiger ranges dramatically. Conservation efforts include anti-poaching patrols, protected-area management, captive-breeding programs, and community engagement to reduce conflict and protect corridors that allow tigers to move between protected areas. Tigers play a critical role as apex predators, helping regulate herbivore populations and maintain ecosystem balance.`
-    },
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active-link'));
+    const link = document.querySelector(`nav a[onclick="showSection('${id}')"]`);
+    if(link) link.classList.add('active-link');
+  }
 
-    {
-      name: "African Elephant",
-      scientific: "Loxodonta africana",
-      habitat: "Savannas, forests and deserts across sub-Saharan Africa",
-      diet: "Herbivore — grasses, leaves, bark, fruit; an adult can eat several hundred pounds of vegetation per day",
-      lifespan: "60–70 years in the wild",
-      details: `African elephants are the largest land animals on Earth, recognizable by their large ears (which help thermoregulation), long trunks (a fusion of nose and upper lip), and large tusks (modified incisors). The trunk is a versatile organ capable of breathing, smelling, touching, grasping, and producing sound. Elephants live in complex social groups led by matriarchs, usually composed of related females and their offspring; males may lead more solitary lives or form small bachelor groups.
+  // =========================
+  // Modal Controls
+  // =========================
+  function openModal(type) {
+    document.getElementById(type+'Modal').style.display = 'flex';
+  }
+  function closeModal(type) {
+    document.getElementById(type+'Modal').style.display = 'none';
+  }
+  window.onclick = function(e) {
+    if (e.target.classList.contains('modal')) e.target.style.display = 'none';
+  }
 
-Their intelligence, memory, and complex social behavior are well documented — they mourn dead family members, use tools, and display cooperative problem-solving. Elephants shape ecosystems by uprooting trees, creating water holes, and dispersing seeds, thereby influencing vegetation structure and biodiversity. Threats include poaching for ivory, habitat loss, and human-elephant conflict, especially where ranges overlap with agricultural lands. Conservation focuses on anti-poaching measures, corridors linking protected areas, and community-based coexistence strategies.`
-    },
+  // =========================
+  // Local Storage User System
+  // =========================
+  function getUsers() {
+    return JSON.parse(localStorage.getItem('users') || '[]');
+  }
 
-    {
-      name: "Giraffe",
-      scientific: "Giraffa camelopardalis",
-      habitat: "Savannas and open woodlands of Africa, often near acacia and other tree species",
-      diet: "Herbivore — leaves (especially from acacia trees), shoots, and fruit; specialized tongue and long neck allow feeding at heights other browsers cannot reach",
-      lifespan: "20–25 years in the wild",
-      details: `Giraffes are the tallest land animals, with adult males and females capable of reaching heights of 4.5 to 6 meters depending on subspecies. Their long necks, while giving them access to high foliage, are supported by an adapted vertebral structure and a strong cardiovascular system to pump blood to the brain. Giraffes have unique spotted coat patterns that vary among subspecies and provide camouflage among trees and light.
+  function saveUsers(users) {
+    localStorage.setItem('users', JSON.stringify(users));
+  }
 
-Social groups are fluid; individuals come and go from herds that may include related females and their offspring. Giraffes use visual cues and low-frequency sounds to communicate, and calves often take shelter in vegetation to avoid predators in early life stages. Despite their size, young giraffes are vulnerable to lions, hyenas, and other large predators. Habitat change and fragmentation, along with poaching in some areas, threaten certain giraffe populations. Conservation actions include habitat protection, research, and monitoring of populations.`
-    },
+  function getCurrentUser() {
+    return JSON.parse(localStorage.getItem('currentUser') || 'null');
+  }
 
-    {
-      name: "Giant Panda",
-      scientific: "Ailuropoda melanoleuca",
-      habitat: "Bamboo forests in mountainous regions of central China",
-      diet: "Specialized herbivore — >99% bamboo (leaves, stems, shoots), supplemented occasionally by small mammals or carrion",
-      lifespan: "Approximately 20 years in the wild, up to 30 years in captivity",
-      details: `Giant pandas are distinctive black-and-white bears with a highly specialized diet primarily composed of bamboo. Their digestive systems are more typical of carnivores, but pandas have adapted behavioral and anatomical traits (strong jaw muscles and molars) to consume large amounts of fibrous bamboo, often eating for 10–16 hours a day to meet energy needs. Pandas have a pseudo-thumb (an extended wrist bone) that helps them hold bamboo stems while feeding.
+  function setCurrentUser(user) {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+  }
 
-Pandas are generally solitary; individuals maintain home ranges and communicate through scent marks and vocalizations. Reproduction can be challenging — pandas have a short annual breeding window and typically raise one or two cubs. Conservation of pandas has been notable for the establishment and expansion of protected reserves and extensive bamboo restoration, which has helped populations rebound in recent decades. The species is also a key symbol for global wildlife conservation.`
-    },
+  function updateNav() {
+    const user = getCurrentUser();
+    const nav = document.querySelector('nav');
+    if(user) {
+      nav.innerHTML = `
+        <a onclick="showSection('home')" class="active-link">Home</a>
+        <a onclick="showSection('tools')">Tools</a>
+        <a onclick="showSection('docs')">About</a>
+        <a onclick="showSection('contact')">Contact</a>
+        <span style="margin-left:10px;color:#4da6ff;">Hello, ${user.name}</span>
+        <a onclick="logout()">Logout</a>
+      `;
+    }
+  }
 
-    {
-      name: "Bottlenose Dolphin",
-      scientific: "Tursiops truncatus",
-      habitat: "Coastal and offshore temperate and tropical waters worldwide",
-      diet: "Carnivore — fish, squid, crustaceans; use echolocation to locate prey",
-      lifespan: "20–40 years depending on population and environmental conditions",
-      details: `Bottlenose dolphins are highly social and intelligent marine mammals recognized for their curious behavior and complex social networks. They live in groups called pods, which can be stable long-term associations or temporary aggregations. Dolphins use sophisticated echolocation clicks and whistles to navigate, communicate, and hunt; their cognitive abilities include problem solving, cooperative hunting strategies, and cultural transmission of behaviors.
+  function logout() {
+    localStorage.removeItem('currentUser');
+    location.reload(); // refresh nav
+  }
 
-Dolphins have been observed using tools (e.g., sponges to protect their rostrums while foraging on the seafloor) and teaching hunting techniques to younger individuals. Human impacts — such as bycatch, pollution, habitat degradation, and noise — affect many dolphin populations. Conservation measures include protected areas, fishing gear modifications, pollution control, and rescue/rehabilitation for stranded individuals.`
-    },
+  // =========================
+  // Login System
+  // =========================
+  const loginBtn = document.querySelector('#loginModal button');
+  loginBtn.addEventListener('click', function() {
+    const email = document.querySelector('#loginModal input[type="text"]').value.trim();
+    const password = document.querySelector('#loginModal input[type="password"]').value.trim();
 
-    {
-      name: "Kangaroo",
-      scientific: "Macropus spp.",
-      habitat: "Varied habitats across Australia including grasslands, woodlands, and savanna",
-      diet: "Herbivore — grasses, leaves, and shrubs; many species are grazers or browsers",
-      lifespan: "6–8 years in the wild for many species; larger species may live longer",
-      details: `Kangaroos are marsupials native to Australia and nearby islands, famous for their powerful hind legs adapted for hopping and a large muscular tail used for balance. Females have a pouch (marsupium) where joeys (young) continue development after a short gestation period. Different kangaroo species occupy niches from open plains (e.g., red kangaroo) to forested areas (e.g., tree-kangaroos), and their behavior, diet, and social systems vary accordingly.
-
-Kangaroos are mostly crepuscular, active around dawn and dusk, and can travel long distances searching for food and water. Males may engage in boxing contests to establish dominance during mating season. Human land use changes, vehicle strikes, and shooting in some regions have affected populations; however, some species remain abundant while others face localized threats. Management strategies often involve monitoring, habitat stewardship, and conflict mitigation.`
-    },
-
-    {
-      name: "Zebra",
-      scientific: "Equus quagga (and related species)",
-      habitat: "Savannas and grasslands of Africa",
-      diet: "Herbivore — grasses and occasional shrubs",
-      lifespan: "20–25 years in the wild",
-      details: `Zebras are striped equids whose bold black-and-white patterns serve functions including predator confusion, social recognition, and possibly thermoregulation or insect deterrence. They live in social family groups often led by a dominant male with several females and offspring. Migration and movement patterns can be extensive in regions where rainfall and food availability vary seasonally.
-
-Zebras interact with other grazers such as wildebeest and antelope, often benefiting from mixed-species herds that increase vigilance against predators. Threats include habitat loss, hunting, and competition with livestock in some areas. Conservation includes protected area management and monitoring populations to understand changes in distribution and abundance.`
-    },
-
-    {
-      name: "Rhinoceros",
-      scientific: "Family Rhinocerotidae",
-      habitat: "African savannas and forests (black and white rhinos) and Asian grasslands and forests (Indian, Javan, Sumatran rhinos)",
-      diet: "Herbivore — browsers or grazers depending on species; feed on grasses, leaves, shoots",
-      lifespan: "35–50 years",
-      details: `Rhinoceroses are large, thick-skinned herbivores known for their one or two horns made of keratin. Different species occupy a range of habitats across Africa and Asia, and their feeding strategies reflect local vegetation. Rhinos have poor eyesight but excellent senses of smell and hearing. Many species are critically endangered, primarily due to poaching driven by demand for horn in illegal markets and habitat loss.
-
-Conservation strategies include intensive anti-poaching patrols, translocations to safer habitats, community engagement to reduce demand and benefit local people, and captive breeding when necessary. The species' role in ecosystems includes grazing pressure that shapes plant communities and creates habitat heterogeneity used by other species.`
-    },
-
-    {
-      name: "Hippopotamus",
-      scientific: "Hippopotamus amphibius",
-      habitat: "Rivers, lakes and wetlands across sub-Saharan Africa",
-      diet: "Herbivore — primarily grasses; largely nocturnal feeders on land",
-      lifespan: "40–50 years",
-      details: `Hippos are large semi-aquatic mammals that spend much of the day submerged to keep cool and emerge at night to graze on grasses. Despite their apparently docile appearance, hippos are highly territorial in water and can be aggressive toward humans and other animals that approach their aquatic domains. Their massive jaws and large canine teeth are formidable weapons.
-
-Hippos also influence aquatic ecosystems through nutrient transfer; their dung can be an important source of nutrients for fish and other aquatic life. Human-wildlife conflict, habitat degradation, and historical hunting have impacted hippo populations regionally. Management and conservation often require balancing human needs, livestock grazing, and wetland protection.`
-    },
-
-    {
-      name: "Gray Wolf",
-      scientific: "Canis lupus",
-      habitat: "A wide range of habitats across North America, Eurasia and parts of North Africa including forests, tundra, and grasslands",
-      diet: "Carnivore — ungulates (deer, elk, moose), smaller mammals, carrion; hunt cooperatively in packs",
-      lifespan: "6–8 years in the wild (longer in protected areas or captivity)",
-      details: `Gray wolves are social carnivores known for pack structures often consisting of an alpha pair and their offspring. Pack hunting allows wolves to take down large prey, and coordinated behaviors such as flanking and endurance running are common during hunts. Wolves communicate with howls, body postures, scent markings and facial expressions.
-
-Wolves historically occupied vast ranges across continents but were extirpated from many regions due to persecution and habitat loss. Reintroduction and protection programs have restored populations in some areas, leading to debates about ecological benefits (such as trophic cascades) and conflicts with livestock owners. Modern conservation approaches emphasize coexistence strategies, compensation schemes, and landscape-level planning.`
-    },
-
-    {
-      name: "Brown Bear",
-      scientific: "Ursus arctos",
-      habitat: "Forests, mountains and tundra across Eurasia and North America",
-      diet: "Omnivore — fish (notably salmon in some regions), small mammals, plants, berries, roots; opportunistic and seasonally variable",
-      lifespan: "20–30 years in the wild",
-      details: `Brown bears are large omnivores with varied diets depending on season and location. In coastal areas with abundant salmon runs, bears build up fat reserves for hibernation by feasting on fish. Inland populations may forage for roots, berries, small mammals, and carrion. Brown bears have significant cultural and ecological importance in many parts of their range.
-
-They can be solitary outside of mating or feeding aggregations, and mothers are protective of cubs for the first years. Human-bear interactions can lead to conflict, especially where food attractants bring bears into camps or towns; securing food and waste is a critical part of coexistence. Conservation measures include protected areas, wildlife corridors, and community outreach to reduce conflict.`
-    },
-
-    {
-      name: "Bald Eagle",
-      scientific: "Haliaeetus leucocephalus",
-      habitat: "Near large bodies of open water across North America — lakes, coasts, rivers",
-      diet: "Carnivore — primarily fish, but also birds and small mammals; opportunistic scavenger",
-      lifespan: "20–30 years in the wild",
-      details: `Bald eagles are large raptors known for their white head and tail feathers contrasting with dark brown body plumage. They build massive stick nests (aeries) often reused for many years and can be found perched on tall trees or cliffs near water. Their eyesight is extraordinary, enabling them to spot fish from great distances.
-
-Historically, pesticides like DDT caused population crashes through eggshell thinning; bans on such chemicals and legal protection have allowed many populations to recover. Bald eagles are apex predators and play a role in regulating prey and scavenging dynamics. They are also culturally iconic and are a national symbol in the United States.`
-    },
-
-    {
-      name: "Emperor Penguin",
-      scientific: "Aptenodytes forsteri",
-      habitat: "Sea ice and nearby Antarctic waters",
-      diet: "Carnivore — fish, krill and squid",
-      lifespan: "15–20 years",
-      details: `Emperor penguins are the largest penguin species and are uniquely adapted to the extreme Antarctic environment. They breed during the Antarctic winter, with males incubating a single egg on their feet beneath a brood pouch while females forage at sea. This remarkable strategy requires males to endure long periods of fasting and extreme cold, relying on fat stores and huddling behavior to conserve heat.
-
-Emperor penguins dive to great depths to forage and are highly efficient swimmers. Changes in sea ice due to climate change pose significant risks to their breeding success and food availability. Conservation relies on monitoring populations, protecting key breeding areas, and addressing global climate change drivers.`
+    if(email === '' || password === '') {
+      alert('Please enter email and password!');
+      return;
     }
 
-  ];
+    const users = getUsers();
+    const user = users.find(u => u.email === email && u.password === password);
+    if(user) {
+      setCurrentUser(user);
+      alert(`Welcome back, ${user.name}!`);
+      closeModal('login');
+      updateNav();
+    } else {
+      alert('Invalid email or password!');
+    }
+  });
 
-  // ----- Utility functions for rendering
-  const listEl = document.getElementById('list');
-  const detailArea = document.getElementById('detailArea');
-  const qInput = document.getElementById('q');
-  const searchBtn = document.getElementById('searchBtn');
-  const resetBtn = document.getElementById('resetBtn');
+  // =========================
+  // Signup System
+  // =========================
+  const signupBtn = document.querySelector('#signupModal button');
+  signupBtn.addEventListener('click', function() {
+    const name = document.querySelector('#signupModal input[type="text"]').value.trim();
+    const email = document.querySelector('#signupModal input[type="email"]').value.trim();
+    const password = document.querySelector('#signupModal input[type="password"]').value.trim();
+    const confirm = document.querySelectorAll('#signupModal input[type="password"]')[1].value.trim();
 
-  function makeCard(an){
-    const div = document.createElement('div');
-    div.className = 'card';
-    div.innerHTML = `<h3>${escapeHtml(an.name)}</h3>
-      <div style="font-size:13px;color:#374151">${escapeHtml(an.scientific)}</div>
-      <p style="margin-top:10px;">${shorten(an.details,160)}</p>
-      <div class=\"meta\">Habitat: ${escapeHtml(an.habitat)} • Diet: ${escapeHtml(an.diet)}</div>
-      <div style=\"margin-top:12px;display:flex;gap:8px\">` +
-      `<button class=\"btn\" onclick=\"showDetail('${encodeURIComponent(an.name)}')\">View</button>` +
-      `</div>`;
-    return div;
-  }
+    if(!name || !email || !password || !confirm) {
+      alert('Please fill all fields!');
+      return;
+    }
+    if(password !== confirm) {
+      alert('Passwords do not match!');
+      return;
+    }
 
-  function renderList(data){
-    listEl.innerHTML='';
-    if(!data.length){listEl.innerHTML='<div style="grid-column:1/-1;padding:20px;background:#fff;border-radius:10px;text-align:center">No results</div>';return}
-    data.forEach(a=>listEl.appendChild(makeCard(a)));
-  }
+    const users = getUsers();
+    if(users.some(u => u.email === email)) {
+      alert('Email already registered!');
+      return;
+    }
 
-  function showDetail(name){
-    const decoded = decodeURIComponent(name);
-    const an = animals.find(x=>x.name.toLowerCase()===decoded.toLowerCase());
-    if(!an){detailArea.innerHTML='<div class="detail"><p>Animal not found.</p></div>';return}
-    detailArea.innerHTML = `
-      <div class="detail">
-        <h2>${escapeHtml(an.name)}</h2>
-        <div class="meta"><strong>Scientific name:</strong> ${escapeHtml(an.scientific)} • <strong>Lifespan:</strong> ${escapeHtml(an.lifespan)}</div>
-        <div class="meta"><strong>Habitat:</strong> ${escapeHtml(an.habitat)} • <strong>Diet:</strong> ${escapeHtml(an.diet)}</div>
-        <hr style="border:none;border-top:1px solid #eef6fb;margin:12px 0" />
-        <div>${formatParagraphs(an.details)}</div>
-      </div>
-    `;
-    window.scrollTo({top: detailArea.offsetTop-20, behavior:'smooth'});
-  }
+    const newUser = { name, email, password };
+    users.push(newUser);
+    saveUsers(users);
+    setCurrentUser(newUser);
+    alert(`Account created! Welcome, ${name}`);
+    closeModal('signup');
+    updateNav();
+  });
 
-  function formatParagraphs(text){
-    // preserve paragraphs separated by double newlines
-    return escapeHtml(text).split('\n\n').map(p=>`<p>${p.replace(/\n/g,'<br>')}</p>`).join('');
-  }
+  // =========================
+  // Contact Form
+  // =========================
+  const contactForm = document.querySelector('#contact form');
+  contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = contactForm.querySelector('input[placeholder="Name"]').value.trim();
+    const email = contactForm.querySelector('input[placeholder="Email"]').value.trim();
+    const subject = contactForm.querySelector('input[placeholder="Subject"]').value.trim();
+    const message = contactForm.querySelector('textarea').value.trim();
 
-  function shorten(text, len){
-    const clean = text.replace(/\n/g,' ');
-    return clean.length>len?clean.slice(0,len).trim()+'...':clean;
-  }
+    if(!name || !email || !subject || !message) {
+      alert('Please fill all fields!');
+      return;
+    }
 
-  function escapeHtml(s){
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#39;');
-  }
+    let messages = JSON.parse(localStorage.getItem('messages') || '[]');
+    messages.push({name, email, subject, message, date: new Date().toLocaleString()});
+    localStorage.setItem('messages', JSON.stringify(messages));
 
-  // ----- Search & interactions
-  function query(q){
-    if(!q) return animals.slice();
-    q=q.toLowerCase().trim();
-    return animals.filter(a=>{
-      return a.name.toLowerCase().includes(q) || a.scientific.toLowerCase().includes(q) || a.habitat.toLowerCase().includes(q) || a.diet.toLowerCase().includes(q) || a.details.toLowerCase().includes(q);
-    });
-  }
+    alert(`Thank you ${name}, your message has been sent!`);
+    contactForm.reset();
+  });
 
-  searchBtn.addEventListener('click',()=>{ renderList(query(qInput.value)); detailArea.innerHTML=''; });
-  resetBtn.addEventListener('click',()=>{ qInput.value=''; renderList(animals); detailArea.innerHTML=''; });
-  qInput.addEventListener('keydown',(e)=>{ if(e.key==='Enter'){ renderList(query(qInput.value)); detailArea.innerHTML=''; } });
+  // =========================
+  // Initialize
+  // =========================
+  document.addEventListener('DOMContentLoaded', function() {
+    updateNav();
+  });
+  </script>
 
-  // initial render
-  renderList(animals);
-
-  // allow deep links like ?name=Lion
-  (function checkHash(){
-    const params = new URLSearchParams(location.search);
-    const n = params.get('name');
-    if(n){ showDetail(n); }
-  })();
-
-  </script></body>
+</body>
 </html>
